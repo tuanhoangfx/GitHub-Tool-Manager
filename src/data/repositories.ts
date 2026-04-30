@@ -1,0 +1,93 @@
+import type { ToolRepository } from "../types";
+
+export const defaultRepositories: ToolRepository[] = [
+  {
+    id: "gpm-automation-console",
+    code: "P0001",
+    name: "GPM Automation Console",
+    repo: "tuanhoangfx/GPM-Automation-Console",
+    branch: "main",
+    category: "Automation",
+    audience: "GPM operators",
+    status: "Ready",
+    summary: "Desktop console for controlling GPM Login profiles, workflow runs, and browser automation from one local surface.",
+    localPath: "E:\\Dev\\Tool\\GPM-Automation-Console",
+    tags: ["Electron", "React", "GPM API", "Automation"],
+    usage: [
+      "Install dependencies with corepack pnpm install.",
+      "Run locally with corepack pnpm dev.",
+      "Build installer with corepack pnpm dist.",
+    ],
+    downloadHint: "Use the latest GitHub release asset when available.",
+    manifestPath: "tool.manifest.json",
+    trackedFiles: ["tool.manifest.json", "package.json", "README.md", "CHANGELOG.md", "RELEASE.md"],
+    scriptFiles: ["scripts/sync-changelog.mjs", "scripts/sync-metadata-version.mjs", "scripts/bump-patch-version.mjs"],
+  },
+  {
+    id: "yt-multistream-console",
+    code: "P0002",
+    name: "YT Multistream Console",
+    repo: "tuanhoangfx/YT-Multistream-Console",
+    branch: "main",
+    category: "Streaming",
+    audience: "Livestream operators",
+    status: "Ready",
+    summary: "Desktop console for running multi-channel YouTube livestream jobs from local files or Google Drive source links.",
+    localPath: "E:\\Dev\\Tool\\YT-Multistream-Console",
+    tags: ["Electron", "React", "FFmpeg", "YouTube"],
+    usage: [
+      "Install dependencies with corepack pnpm install.",
+      "Run locally with corepack pnpm dev.",
+      "Keep stream keys masked before sharing logs.",
+    ],
+    downloadHint: "Use release setup asset or clone the public repository.",
+    manifestPath: "tool.manifest.json",
+    trackedFiles: ["tool.manifest.json", "package.json", "README.md", "CHANGELOG.md", "RELEASE.md"],
+    scriptFiles: ["scripts/sync-changelog.mjs", "scripts/sync-metadata-version.mjs", "scripts/smoke-test.cjs"],
+  },
+  {
+    id: "unified-tool-admin",
+    code: "P0003",
+    name: "Workspace Center",
+    repo: "tuanhoangfx/Unified-Tool-Admin",
+    branch: "main",
+    category: "Workspace",
+    audience: "Tool maintainers",
+    status: "Ready",
+    summary: "Workspace registry and scanner for tools, web apps, extensions, and scripts inside the local Dev workspace.",
+    localPath: "E:\\Dev\\Tool\\Workspace Center",
+    tags: ["React", "Vite", "Registry", "Scanner"],
+    usage: [
+      "Run scan:workspaces to regenerate registry data.",
+      "Review generated registry before pushing public metadata.",
+      "Use the dashboard to inspect workspace health.",
+    ],
+    downloadHint: "Use GitHub repository source until release assets are published.",
+    manifestPath: "tool.manifest.json",
+    trackedFiles: ["tool.manifest.json", "package.json", "README.md", "CHANGELOG.md", "PROJECT_CONTEXT.md"],
+    scriptFiles: ["scripts/scan-workspaces.cjs", "scripts/watch-workspaces.cjs", "scripts/push-github-api.cjs"],
+  },
+];
+
+export const ruleSources = [
+  {
+    label: "Working Rules",
+    path: "E:\\Dev\\Rules\\rules\\Working_Rules.md",
+    summary: "Caution, surgical scope, verification before closing, and concise communication.",
+  },
+  {
+    label: "Workspace Design Standard",
+    path: "E:\\Dev\\Rules\\standards\\Workspace_Design_Standard.md",
+    summary: "Shared design tokens, compact table header patterns, dropdown rules, typography, and spacing rhythm.",
+  },
+  {
+    label: "Changelog Standard",
+    path: "E:\\Dev\\Rules\\standards\\Changelog_Standard.md",
+    summary: "Parseable release history format with version, type, status, verification, and rollback sections.",
+  },
+  {
+    label: "Design Base CSS",
+    path: "E:\\Dev\\Rules\\design\\workspace-design-base.css",
+    summary: "Canonical imported CSS baseline synchronized from existing production tools.",
+  },
+];

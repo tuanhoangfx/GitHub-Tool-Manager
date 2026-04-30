@@ -1,0 +1,34 @@
+{
+  "name": "github-tool-manager",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Two-mode public catalog and GitHub operations console for published workspace tools.",
+  "author": "Tool Workspace",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5176",
+    "build": "tsc --noEmit && vite build",
+    "lint": "eslint .",
+    "scan:local": "node scripts/scan-local-workspace.cjs",
+    "publish:github": "node scripts/publish-github-repo.cjs",
+    "preview": "vite preview --host 127.0.0.1 --port 4176"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "vite": "^7.2.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^16.4.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.59.1"
+  }
+}

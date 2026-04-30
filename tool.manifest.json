@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "code": "P0004",
+  "id": "github-tool-manager",
+  "aliases": ["P0004", "GitHub Tool Manager", "Tool Store"],
+  "name": "GitHub Tool Manager",
+  "type": "Web",
+  "owner": "Tool",
+  "status": "Ready",
+  "summary": "Public card catalog and GitHub repository management console for published tools.",
+  "stack": ["React", "TypeScript", "Vite", "GitHub public raw API"],
+  "commands": {
+    "dev": "corepack pnpm dev",
+    "build": "corepack pnpm build",
+    "preview": "corepack pnpm preview",
+    "scan": "corepack pnpm scan:local",
+    "publish": "corepack pnpm publish:github"
+  },
+  "docs": {
+    "readme": "README.md",
+    "changelog": "CHANGELOG.md"
+  },
+  "github": {
+    "repo": "tuanhoangfx/GitHub-Tool-Manager",
+    "branch": "main",
+    "manifestPath": "tool.manifest.json"
+  },
+  "release": {
+    "version": "0.1.0",
+    "readiness": ["build", "lint", "public-catalog", "repo-admin", "github-actions", "local-registry"]
+  },
+  "health": {
+    "status": "Ready",
+    "note": "Reads public GitHub metadata in-browser. Write operations should be handled by a future local agent or GitHub app token flow."
+  },
+  "nextActions": [
+    "Add authenticated GitHub App workflow for issue/release creation.",
+    "Add local workspace scanner merge with remote manifests.",
+    "Add version drift alerts across package, manifest, changelog, and latest release."
+  ]
+}

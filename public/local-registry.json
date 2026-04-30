@@ -1,0 +1,119 @@
+{
+  "generatedAt": "2026-04-30T09:20:09.866Z",
+  "root": "E:\\Dev\\Tool",
+  "repositories": [
+    {
+      "id": "gpm-automation-console",
+      "code": "P0001",
+      "name": "GPM Automation Console",
+      "repo": "tuanhoangfx/GPM-Automation-Console",
+      "branch": "main",
+      "category": "Desktop",
+      "audience": "Tool maintainers",
+      "status": "Ready",
+      "summary": "Local desktop console for managing and automating GPM Login profiles through the local GPM API.",
+      "localPath": "E:\\Dev\\Tool\\GPM-Automation-Console",
+      "tags": [
+        "Electron",
+        "React",
+        "Vite",
+        "Playwright CDP"
+      ],
+      "usage": [
+        "Dev: corepack pnpm dev",
+        "Build: corepack pnpm build"
+      ],
+      "downloadHint": "Use GitHub release asset when available, otherwise clone the repository.",
+      "manifestPath": "tool.manifest.json",
+      "trackedFiles": [
+        "tool.manifest.json",
+        "package.json",
+        "README.md",
+        "CHANGELOG.md",
+        "RELEASE.md"
+      ],
+      "scriptFiles": [
+        "scripts/audit-cleanup.mjs",
+        "scripts/bump-patch-version.mjs",
+        "scripts/install-git-hooks.mjs",
+        "scripts/sync-changelog.mjs",
+        "scripts/sync-metadata-version.mjs",
+        "scripts/tag-local-release.mjs"
+      ]
+    },
+    {
+      "id": "unified-tool-admin",
+      "code": "P0003",
+      "name": "Unified Tool Admin",
+      "repo": "tuanhoangfx/Unified-Tool-Admin",
+      "branch": "main",
+      "category": "Desktop",
+      "audience": "Tool maintainers",
+      "status": "Ready",
+      "summary": "Central operations console for tools, webapps, extensions, and scripts inside D:\\Dev.",
+      "localPath": "E:\\Dev\\Tool\\Workspace Center",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Vite"
+      ],
+      "usage": [
+        "Dev: corepack pnpm dev",
+        "Build: corepack pnpm build"
+      ],
+      "downloadHint": "Use GitHub release asset when available, otherwise clone the repository.",
+      "manifestPath": "tool.manifest.json",
+      "trackedFiles": [
+        "tool.manifest.json",
+        "package.json",
+        "README.md",
+        "CHANGELOG.md",
+        "RELEASE.md"
+      ],
+      "scriptFiles": [
+        "scripts/push-github-api.cjs",
+        "scripts/scan-workspaces.cjs",
+        "scripts/watch-workspaces.cjs"
+      ]
+    },
+    {
+      "id": "yt-multistream-console",
+      "code": "P0002",
+      "name": "YT Multistream Console",
+      "repo": "tuanhoangfx/YT-Multistream-Console",
+      "branch": "main",
+      "category": "Desktop",
+      "audience": "Tool maintainers",
+      "status": "Ready",
+      "summary": "Local desktop console for running multi-channel YouTube livestream jobs from local video files or Google Drive links.",
+      "localPath": "E:\\Dev\\Tool\\YT-Multistream-Console",
+      "tags": [
+        "Electron",
+        "React",
+        "Vite",
+        "FFmpeg"
+      ],
+      "usage": [
+        "Dev: corepack pnpm dev",
+        "Build: corepack pnpm build"
+      ],
+      "downloadHint": "Use GitHub release asset when available, otherwise clone the repository.",
+      "manifestPath": "tool.manifest.json",
+      "trackedFiles": [
+        "tool.manifest.json",
+        "package.json",
+        "README.md",
+        "CHANGELOG.md",
+        "RELEASE.md"
+      ],
+      "scriptFiles": [
+        "scripts/audit-cleanup.mjs",
+        "scripts/bump-patch-version.mjs",
+        "scripts/live-test.cjs",
+        "scripts/smoke-test.cjs",
+        "scripts/sync-changelog.mjs",
+        "scripts/sync-metadata-version.mjs"
+      ]
+    }
+  ]
+}
