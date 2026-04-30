@@ -404,7 +404,6 @@ function App() {
           </div>
         </div>
 
-        <p className="side-section-label">Workspace</p>
         <nav className="side-nav" aria-label="Main navigation">
           <SideNavButton active={activeTab === "store"} icon={<LayoutGrid size={17} />} label="Tool Store" onClick={() => setActiveTab("store")} />
           <SideNavButton active={activeTab === "admin"} icon={<Table2 size={17} />} label="Repo Admin" onClick={() => setActiveTab("admin")} />
@@ -414,7 +413,6 @@ function App() {
         </nav>
 
         <div className="sidebar-footer">
-          <p className="side-section-label">Theme</p>
           <div className="theme-switcher" aria-label="Theme switcher">
             {themes.map((item) => (
               <button
@@ -428,7 +426,6 @@ function App() {
               </button>
             ))}
           </div>
-          <p className="side-section-label">Quick actions</p>
           <button className="primary-action wide" type="button" onClick={refreshAll} disabled={loadingAll}>
             <RefreshCw size={15} className={loadingAll ? "spin" : ""} />
             Refresh remote
@@ -443,7 +440,7 @@ function App() {
 
       <section className="main-panel">
         <header className="content-header">
-          <div className="header-title">
+          <div>
             <p className="eyebrow">
               {activeTab === "store"
                 ? "Public catalog"
@@ -467,12 +464,6 @@ function App() {
                       : "Rules and Standards"}
             </h2>
           </div>
-          <section className="header-metrics" aria-label="Workspace metrics">
-            <Metric icon={<Boxes size={18} />} label="Tools" value={stats.total} tone="blue" />
-            <Metric icon={<ShieldCheck size={18} />} label="Ready" value={stats.ready} tone="green" />
-            <Metric icon={<Download size={18} />} label="Release" value={stats.releases} tone="teal" />
-            <Metric icon={<AlertTriangle size={18} />} label="Drift" value={stats.drift} tone="rose" />
-          </section>
           <div className="header-actions">
             <label className="search-box">
               <Search size={16} />
@@ -491,6 +482,13 @@ function App() {
             </label>
           </div>
         </header>
+
+        <section className="metrics-grid" aria-label="Workspace metrics">
+          <Metric icon={<Boxes size={21} />} label="Total tools" value={stats.total} tone="blue" />
+          <Metric icon={<ShieldCheck size={21} />} label="Ready" value={stats.ready} tone="green" />
+          <Metric icon={<Download size={21} />} label="Release links" value={stats.releases} tone="teal" />
+          <Metric icon={<AlertTriangle size={21} />} label="Drift alerts" value={stats.drift} tone="rose" />
+        </section>
 
         {activeTab === "store" ? (
           <StoreTab tools={filteredTools} selectedId={selectedTool.id} onSelect={setSelectedId} />
@@ -559,10 +557,7 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
             <p className="eyebrow">Catalog</p>
             <h2>{tools.length} public tools</h2>
           </div>
-          <div className="board-actions">
-            <span className="board-count">{tools.filter((tool) => tool.healthLabel === "Ready").length} ready</span>
-            <span className="board-count muted">{tools.reduce((sum, tool) => sum + tool.driftAlerts.length, 0)} alerts</span>
-          </div>
+          <span className="board-count">{tools.filter((tool) => tool.healthLabel === "Ready").length} ready</span>
         </div>
 
         <div className="card-grid">
@@ -607,26 +602,15 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
 
       {selectedTool ? (
         <aside className="detail-panel depth-panel">
-          <div className="detail-hero">
-            <div className="detail-mark">
-              <Boxes size={22} />
-            </div>
+          <div className="panel-title-row">
             <div>
-              <p className="eyebrow">Selected tool</p>
+              <p className="eyebrow">Public view</p>
               <h2>{selectedTool.name}</h2>
-              <span>{selectedTool.repo}</span>
             </div>
+            <span className="version-chip">v{selectedTool.version}</span>
           </div>
 
           <p className="detail-summary">{selectedTool.summary}</p>
-
-          <div className="detail-status-row">
-            <span className={`status-dot ${selectedTool.healthLabel === "Ready" ? "ok" : "warn"}`}>{selectedTool.healthLabel}</span>
-            <span className="version-chip">v{selectedTool.version}</span>
-            <span className={selectedTool.driftAlerts.length ? "inline-alert" : "status-dot ok"}>
-              {selectedTool.driftAlerts.length ? `${selectedTool.driftAlerts.length} drift` : "No drift"}
-            </span>
-          </div>
 
           <div className="action-row">
             <a className="primary-action wide" href={selectedTool.downloadUrl} target="_blank" rel="noreferrer">
@@ -656,18 +640,6 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
             <InfoItem label="Audience" value={selectedTool.audience} />
             <InfoItem label="Repo" value={selectedTool.repo} />
             <InfoItem label="Updated" value={formatDate(selectedTool.updatedAt)} />
-          </section>
-
-          <section className="info-block">
-            <h3>
-              <Sparkles size={15} />
-              Stack
-            </h3>
-            <div className="tag-row detail-tags">
-              {selectedTool.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
           </section>
         </aside>
       ) : (
