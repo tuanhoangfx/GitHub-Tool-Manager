@@ -551,38 +551,57 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
 
   return (
     <section className="store-layout">
-      <div className="card-grid">
-        {tools.map((tool) => (
-          <article className={tool.id === selectedId ? "tool-card selected" : "tool-card"} key={tool.id} onClick={() => onSelect(tool.id)}>
-            <div className="card-head">
-              <span className="code-pill">{tool.code}</span>
-              <span className={`status-dot ${tool.healthLabel === "Ready" ? "ok" : "warn"}`}>
-                {tool.remoteEnabled === false ? "Local only" : tool.healthLabel}
-              </span>
-            </div>
-            <h2>{tool.name}</h2>
-            <p>{tool.summary}</p>
-            {tool.driftAlerts.length > 0 ? (
-              <span className="inline-alert">
-                <AlertTriangle size={13} />
-                {tool.driftAlerts.length} drift
-              </span>
-            ) : null}
-            <div className="tag-row">
-              {tool.tags.slice(0, 4).map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
-            <div className="card-footer">
-              <span>v{tool.version}</span>
-              <ArrowUpRight size={17} />
-            </div>
-          </article>
-        ))}
-      </div>
+      <section className="catalog-board">
+        <div className="catalog-board-head">
+          <div>
+            <p className="eyebrow">Catalog</p>
+            <h2>{tools.length} public tools</h2>
+          </div>
+          <span className="board-count">{tools.filter((tool) => tool.healthLabel === "Ready").length} ready</span>
+        </div>
+
+        <div className="card-grid">
+          {tools.map((tool) => (
+            <article className={tool.id === selectedId ? "tool-card selected" : "tool-card"} key={tool.id} onClick={() => onSelect(tool.id)}>
+              <div className="card-head">
+                <span className="code-pill">{tool.code}</span>
+                <span className={`status-dot ${tool.healthLabel === "Ready" ? "ok" : "warn"}`}>
+                  {tool.remoteEnabled === false ? "Local only" : tool.healthLabel}
+                </span>
+              </div>
+
+              <div className="card-main">
+                <h2>{tool.name}</h2>
+                <p>{tool.summary}</p>
+              </div>
+
+              <div className="card-meta-row">
+                <span className="version-chip">v{tool.version}</span>
+                {tool.driftAlerts.length > 0 ? (
+                  <span className="inline-alert">
+                    <AlertTriangle size={13} />
+                    {tool.driftAlerts.length} drift
+                  </span>
+                ) : null}
+              </div>
+
+              <div className="tag-row">
+                {tool.tags.slice(0, 4).map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+
+              <div className="card-footer">
+                <span>{tool.category}</span>
+                <ArrowUpRight size={16} />
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       {selectedTool ? (
-        <aside className="detail-panel">
+        <aside className="detail-panel depth-panel">
           <div className="panel-title-row">
             <div>
               <p className="eyebrow">Public view</p>
