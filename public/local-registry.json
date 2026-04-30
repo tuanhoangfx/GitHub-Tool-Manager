@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T09:38:46.269Z",
+  "generatedAt": "2026-04-30T09:44:19.584Z",
   "root": "E:\\Dev\\Tool",
   "repositories": [
     {
@@ -8,7 +8,7 @@
       "name": "GitHub Tool Manager",
       "repo": "tuanhoangfx/GitHub-Tool-Manager",
       "branch": "main",
-      "remoteEnabled": false,
+      "remoteEnabled": true,
       "localVersion": "0.1.0",
       "category": "Web",
       "audience": "Tool maintainers",
@@ -75,7 +75,7 @@
         "scripts/audit-cleanup.mjs",
         "scripts/bump-patch-version.mjs",
         "scripts/install-git-hooks.mjs",
-        "scripts/stamp-release-on-change.mjs",
+        "scripts/stamp-prompt-log.mjs",
         "scripts/sync-metadata-version.mjs",
         "scripts/sync-release-log.mjs"
       ]

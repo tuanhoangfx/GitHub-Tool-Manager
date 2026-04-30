@@ -2,7 +2,6 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const workspaceRoot = process.env.TOOL_WORKSPACE || path.resolve(__dirname, "..", "..");
-const managerRoot = path.resolve(__dirname, "..");
 const outputPath = path.resolve(__dirname, "..", "public", "local-registry.json");
 
 function readJson(filePath) {
@@ -33,7 +32,6 @@ function toToolRepository(dir, index) {
 
   const folderName = path.basename(dir);
   const repo = manifest?.github?.repo || normalizeRepo(packageJson?.repository);
-  const isManagerApp = path.resolve(dir) === managerRoot;
   const id =
     manifest?.id ||
     packageJson?.name ||
@@ -45,7 +43,7 @@ function toToolRepository(dir, index) {
     name: manifest?.name || folderName,
     repo: repo || "",
     branch: manifest?.github?.branch || "main",
-    remoteEnabled: Boolean(repo) && !isManagerApp,
+    remoteEnabled: Boolean(repo),
     localVersion: packageJson?.version || manifest?.release?.version || "local",
     category: manifest?.type || "Local",
     audience: "Tool maintainers",
