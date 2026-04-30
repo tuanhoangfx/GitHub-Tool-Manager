@@ -565,22 +565,27 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
           </div>
         </div>
 
-        <div className="card-grid">
+        <div className="tool-list">
           {tools.map((tool) => (
-            <article className={tool.id === selectedId ? "tool-card selected" : "tool-card"} key={tool.id} onClick={() => onSelect(tool.id)}>
-              <div className="card-head">
+            <article className={tool.id === selectedId ? "tool-row selected" : "tool-row"} key={tool.id} onClick={() => onSelect(tool.id)}>
+              <div className="tool-row-id">
                 <span className="code-pill">{tool.code}</span>
+              </div>
+
+              <div className="tool-row-main">
+                <h2>{tool.name}</h2>
+                <p>{tool.summary}</p>
+                <div className="tag-row">
+                  {tool.tags.slice(0, 4).map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="tool-row-state">
                 <span className={`status-dot ${tool.healthLabel === "Ready" ? "ok" : "warn"}`}>
                   {tool.remoteEnabled === false ? "Local only" : tool.healthLabel}
                 </span>
-              </div>
-
-              <div className="card-main">
-                <h2>{tool.name}</h2>
-                <p>{tool.summary}</p>
-              </div>
-
-              <div className="card-meta-row">
                 <span className="version-chip">v{tool.version}</span>
                 {tool.driftAlerts.length > 0 ? (
                   <span className="inline-alert">
@@ -590,13 +595,7 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
                 ) : null}
               </div>
 
-              <div className="tag-row">
-                {tool.tags.slice(0, 4).map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-
-              <div className="card-footer">
+              <div className="tool-row-action">
                 <span>{tool.category}</span>
                 <ArrowUpRight size={16} />
               </div>
