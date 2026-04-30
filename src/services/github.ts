@@ -27,7 +27,7 @@ async function fetchWithTimeout(url: string, init?: RequestInit) {
 }
 
 export function repoUrl(repo: string) {
-  return `https://github.com/${repo}`;
+  return repo ? `https://github.com/${repo}` : "#";
 }
 
 export function rawFileUrl(repo: ToolRepository, path: string) {
@@ -75,6 +75,37 @@ async function readJson<T>(repo: ToolRepository, path: string): Promise<T | unde
 }
 
 export async function hydrateRepository(repo: ToolRepository): Promise<ToolRemoteState> {
+  if (repo.remoteEnabled === false || !repo.repo) {
+    return {
+      id: repo.id,
+      loading: false,
+      checkedAt: new Date().toISOString(),
+      repoInfo: {
+        html_url: repo.repo ? repoUrl(repo.repo) : undefined,
+        default_branch: repo.branch,
+        visibility: "local",
+      },
+      manifest: {
+        code: repo.code,
+        id: repo.id,
+        name: repo.name,
+        status: repo.status,
+        summary: repo.summary,
+        release: {
+          version: repo.localVersion,
+        },
+        health: {
+          status: repo.status,
+          note: "Local-only registry entry. Remote sync is disabled until the GitHub repository is published.",
+        },
+      },
+      packageJson: {
+        version: repo.localVersion,
+      },
+      files: [],
+    };
+  }
+
   const uniqueFiles = Array.from(new Set([repo.manifestPath, ...repo.trackedFiles, ...repo.scriptFiles]));
 
   try {

@@ -6,6 +6,8 @@ export type ToolRepository = {
   name: string;
   repo: string;
   branch: string;
+  remoteEnabled?: boolean;
+  localVersion?: string;
   category: string;
   audience: string;
   status: RepoStatus;

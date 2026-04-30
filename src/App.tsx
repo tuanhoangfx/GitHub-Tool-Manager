@@ -73,6 +73,8 @@ function extractChangelogVersion(remote?: ToolRemoteState) {
 }
 
 function createVersionAlerts(remote?: ToolRemoteState) {
+  if (!remote) return [];
+
   const manifestVersion = remote?.manifest?.release?.version ?? "";
   const packageVersion = remote?.packageJson?.version ?? "";
   const releaseVersion = normalizeVersion(remote?.latestRelease?.tag_name);
@@ -103,6 +105,10 @@ function createVersionAlerts(remote?: ToolRemoteState) {
 }
 
 function createSuggestions(tool: ToolRepository, remote?: ToolRemoteState) {
+  if (tool.remoteEnabled === false) {
+    return ["Tool dang hien thi tu local registry. Publish GitHub repo xong thi bat remote sync lai."];
+  }
+
   const files = remote?.files ?? [];
   const missingFiles = files.filter((file) => !file.ok);
   const missingScripts = missingFiles.filter((file) => tool.scriptFiles.includes(file.path));
@@ -126,6 +132,7 @@ function resolveTool(tool: ToolRepository, remote?: ToolRemoteState): ResolvedTo
     remote?.manifest?.release?.version ||
     remote?.packageJson?.version ||
     normalizeVersion(remote?.latestRelease?.tag_name) ||
+    tool.localVersion ||
     "local";
 
   return {
@@ -134,7 +141,7 @@ function resolveTool(tool: ToolRepository, remote?: ToolRemoteState): ResolvedTo
     version,
     releaseUrl: remote?.latestRelease?.html_url ?? `${repoUrl(tool.repo)}/releases`,
     repoUrl: remote?.repoInfo?.html_url ?? repoUrl(tool.repo),
-    downloadUrl: firstReleaseAsset(remote) ?? `${repoUrl(tool.repo)}/releases`,
+    downloadUrl: tool.remoteEnabled === false ? repoUrl(tool.repo) : firstReleaseAsset(remote) ?? `${repoUrl(tool.repo)}/releases`,
     healthLabel: remote?.manifest?.health?.status ?? remote?.manifest?.status ?? tool.status,
     updatedAt: remote?.repoInfo?.pushed_at ?? remote?.repoInfo?.updated_at ?? remote?.checkedAt ?? "",
     driftAlerts: createVersionAlerts(remote),
@@ -157,7 +164,16 @@ function mergeRepos(localRepos: ToolRepository[], customRepos: ToolRepository[])
   for (const repo of localRepos) {
     const key = repo.repo.toLowerCase();
     const current = byRepo.get(key);
-    byRepo.set(key, current ? { ...current, localPath: repo.localPath, scriptFiles: repo.scriptFiles } : repo);
+    byRepo.set(
+      key,
+      current
+        ? {
+            ...current,
+            localPath: repo.localPath,
+            localVersion: repo.localVersion,
+          }
+        : repo,
+    );
   }
 
   for (const repo of customRepos) {
@@ -515,7 +531,9 @@ function StoreTab({ tools, selectedId, onSelect }: { tools: ResolvedTool[]; sele
           <article className={tool.id === selectedId ? "tool-card selected" : "tool-card"} key={tool.id} onClick={() => onSelect(tool.id)}>
             <div className="card-head">
               <span className="code-pill">{tool.code}</span>
-              <span className={`status-dot ${tool.healthLabel === "Ready" ? "ok" : "warn"}`}>{tool.healthLabel}</span>
+              <span className={`status-dot ${tool.healthLabel === "Ready" ? "ok" : "warn"}`}>
+                {tool.remoteEnabled === false ? "Local only" : tool.healthLabel}
+              </span>
             </div>
             <h2>{tool.name}</h2>
             <p>{tool.summary}</p>
@@ -914,8 +932,8 @@ function ReleaseChecklistTab({ selectedTool }: { selectedTool: ResolvedTool }) {
             <p className="eyebrow">Release gate</p>
             <h2>{selectedTool.name}</h2>
           </div>
-          <span className={passed === checks.length ? "status-dot ok" : "status-dot warn"}>
-            {passed}/{checks.length} passed
+            <span className={passed === checks.length ? "status-dot ok" : "status-dot warn"}>
+              {selectedTool.remoteEnabled === false ? "Local only" : `${passed}/${checks.length} passed`}
           </span>
         </div>
 

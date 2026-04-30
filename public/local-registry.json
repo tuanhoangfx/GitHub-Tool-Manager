@@ -1,13 +1,52 @@
 {
-  "generatedAt": "2026-04-30T09:20:09.866Z",
+  "generatedAt": "2026-04-30T09:38:46.269Z",
   "root": "E:\\Dev\\Tool",
   "repositories": [
+    {
+      "id": "github-tool-manager",
+      "code": "P0004",
+      "name": "GitHub Tool Manager",
+      "repo": "tuanhoangfx/GitHub-Tool-Manager",
+      "branch": "main",
+      "remoteEnabled": false,
+      "localVersion": "0.1.0",
+      "category": "Web",
+      "audience": "Tool maintainers",
+      "status": "Ready",
+      "summary": "Public card catalog and GitHub repository management console for published tools.",
+      "localPath": "E:\\Dev\\Tool\\GitHub-Tool-Manager",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "GitHub public raw API"
+      ],
+      "usage": [
+        "Dev: corepack pnpm dev",
+        "Build: corepack pnpm build"
+      ],
+      "downloadHint": "Use GitHub release asset when available, otherwise clone the repository.",
+      "manifestPath": "tool.manifest.json",
+      "trackedFiles": [
+        "tool.manifest.json",
+        "package.json",
+        "README.md",
+        "CHANGELOG.md",
+        "RELEASE.md"
+      ],
+      "scriptFiles": [
+        "scripts/publish-github-repo.cjs",
+        "scripts/scan-local-workspace.cjs"
+      ]
+    },
     {
       "id": "gpm-automation-console",
       "code": "P0001",
       "name": "GPM Automation Console",
       "repo": "tuanhoangfx/GPM-Automation-Console",
       "branch": "main",
+      "remoteEnabled": true,
+      "localVersion": "0.1.8",
       "category": "Desktop",
       "audience": "Tool maintainers",
       "status": "Ready",
@@ -36,9 +75,9 @@
         "scripts/audit-cleanup.mjs",
         "scripts/bump-patch-version.mjs",
         "scripts/install-git-hooks.mjs",
-        "scripts/sync-changelog.mjs",
+        "scripts/stamp-release-on-change.mjs",
         "scripts/sync-metadata-version.mjs",
-        "scripts/tag-local-release.mjs"
+        "scripts/sync-release-log.mjs"
       ]
     },
     {
@@ -47,6 +86,8 @@
       "name": "Unified Tool Admin",
       "repo": "tuanhoangfx/Unified-Tool-Admin",
       "branch": "main",
+      "remoteEnabled": true,
+      "localVersion": "0.0.0",
       "category": "Desktop",
       "audience": "Tool maintainers",
       "status": "Ready",
@@ -82,6 +123,8 @@
       "name": "YT Multistream Console",
       "repo": "tuanhoangfx/YT-Multistream-Console",
       "branch": "main",
+      "remoteEnabled": true,
+      "localVersion": "0.1.0",
       "category": "Desktop",
       "audience": "Tool maintainers",
       "status": "Ready",

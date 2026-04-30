@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const workspaceRoot = process.env.TOOL_WORKSPACE || path.resolve(__dirname, "..", "..");
+const managerRoot = path.resolve(__dirname, "..");
 const outputPath = path.resolve(__dirname, "..", "public", "local-registry.json");
 
 function readJson(filePath) {
@@ -32,6 +33,7 @@ function toToolRepository(dir, index) {
 
   const folderName = path.basename(dir);
   const repo = manifest?.github?.repo || normalizeRepo(packageJson?.repository);
+  const isManagerApp = path.resolve(dir) === managerRoot;
   const id =
     manifest?.id ||
     packageJson?.name ||
@@ -43,6 +45,8 @@ function toToolRepository(dir, index) {
     name: manifest?.name || folderName,
     repo: repo || "",
     branch: manifest?.github?.branch || "main",
+    remoteEnabled: Boolean(repo) && !isManagerApp,
+    localVersion: packageJson?.version || manifest?.release?.version || "local",
     category: manifest?.type || "Local",
     audience: "Tool maintainers",
     status: manifest?.status || "Needs review",
@@ -68,16 +72,10 @@ function toToolRepository(dir, index) {
 
 const repositories = fs
   .readdirSync(workspaceRoot, { withFileTypes: true })
-  .filter(
-    (entry) =>
-      entry.isDirectory() &&
-      !entry.name.startsWith(".") &&
-      entry.name !== "node_modules" &&
-      entry.name !== path.basename(path.resolve(__dirname, "..")),
-  )
+  .filter((entry) => entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules")
   .map((entry, index) => toToolRepository(path.join(workspaceRoot, entry.name), index))
   .filter(Boolean)
-  .filter((repo) => repo.repo);
+  .filter((repo) => repo.repo || repo.remoteEnabled === false);
 
 const registry = {
   generatedAt: new Date().toISOString(),
