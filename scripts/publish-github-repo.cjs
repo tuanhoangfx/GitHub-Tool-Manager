@@ -11,11 +11,13 @@ const description =
   "Public catalog and GitHub operations console for published workspace tools.";
 
 function run(command, args, options = {}) {
-  return execFileSync(command, args, {
+  const output = execFileSync(command, args, {
     cwd,
     encoding: "utf8",
     stdio: options.stdio || "pipe",
-  }).trim();
+  });
+
+  return typeof output === "string" ? output.trim() : "";
 }
 
 async function github(pathname, init = {}) {
@@ -74,22 +76,27 @@ async function main() {
     run("git", ["checkout", "-b", "main"], { stdio: "inherit" });
   }
 
-  const remoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`;
+  const cleanRemoteUrl = `https://github.com/${owner}/${repo}.git`;
+  const pushRemoteUrl = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`;
   const remotes = run("git", ["remote"]);
-  if (!remotes.split(/\s+/).includes("origin")) {
-    run("git", ["remote", "add", "origin", remoteUrl], { stdio: "inherit" });
-  } else {
-    run("git", ["remote", "set-url", "origin", remoteUrl], { stdio: "inherit" });
-  }
 
-  run("git", ["add", "-A"], { stdio: "inherit" });
-  const status = run("git", ["status", "--porcelain"]);
-  if (status) {
-    run("git", ["commit", "-m", "Initial GitHub Tool Manager"], { stdio: "inherit" });
-  }
+  try {
+    if (!remotes.split(/\s+/).includes("origin")) {
+      run("git", ["remote", "add", "origin", pushRemoteUrl], { stdio: "inherit" });
+    } else {
+      run("git", ["remote", "set-url", "origin", pushRemoteUrl], { stdio: "inherit" });
+    }
 
-  run("git", ["push", "-u", "origin", "HEAD:main"], { stdio: "inherit" });
-  run("git", ["remote", "set-url", "origin", `https://github.com/${owner}/${repo}.git`], { stdio: "inherit" });
+    run("git", ["add", "-A"], { stdio: "inherit" });
+    const status = run("git", ["status", "--porcelain"]);
+    if (status) {
+      run("git", ["commit", "-m", "Update GitHub Tool Manager"], { stdio: "inherit" });
+    }
+
+    run("git", ["push", "-u", "origin", "HEAD:main"], { stdio: "inherit" });
+  } finally {
+    run("git", ["remote", "set-url", "origin", cleanRemoteUrl], { stdio: "inherit" });
+  }
   console.log(`Published https://github.com/${owner}/${repo}`);
 }
 
