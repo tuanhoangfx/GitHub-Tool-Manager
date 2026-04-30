@@ -39,8 +39,14 @@ import {
 import type { LocalRegistry, RemoteFileState, ResolvedTool, ToolRemoteState, ToolRepository } from "./types";
 
 type ActiveTab = "store" | "admin" | "github" | "release" | "rules";
+type ThemeId = "graphite" | "porcelain" | "sage";
 
 const statusOrder = ["Ready", "Needs review", "Experimental", "Archived"];
+const themes: Array<{ id: ThemeId; label: string }> = [
+  { id: "graphite", label: "Graphite" },
+  { id: "porcelain", label: "Porcelain" },
+  { id: "sage", label: "Sage" },
+];
 
 function formatDate(value?: string) {
   if (!value) return "Chua co du lieu";
@@ -193,6 +199,7 @@ function App() {
   const [localRegistry, setLocalRegistry] = useState<LocalRegistry | undefined>();
   const [githubToken, setGithubToken] = useState(() => sessionStorage.getItem("github-tool-manager.token") ?? "");
   const [actionStatus, setActionStatus] = useState("");
+  const [theme, setTheme] = useState<ThemeId>(() => (localStorage.getItem("github-tool-manager.theme") as ThemeId | null) ?? "graphite");
   const [customRepos, setCustomRepos] = useState<ToolRepository[]>(() => {
     const raw = localStorage.getItem("github-tool-manager.customRepos");
     if (!raw) return [];
@@ -273,6 +280,11 @@ function App() {
     setGithubToken(value);
     if (value) sessionStorage.setItem("github-tool-manager.token", value);
     else sessionStorage.removeItem("github-tool-manager.token");
+  }
+
+  function selectTheme(value: ThemeId) {
+    setTheme(value);
+    localStorage.setItem("github-tool-manager.theme", value);
   }
 
   function addRepo() {
@@ -380,7 +392,7 @@ function App() {
   }, [repositories.length]);
 
   return (
-    <main className="workspace-shell">
+    <main className={`workspace-shell theme-${theme}`}>
       <aside className="sidebar">
         <div className="brand-lockup">
           <span className="brand-mark" aria-hidden="true">
@@ -401,6 +413,19 @@ function App() {
         </nav>
 
         <div className="sidebar-footer">
+          <div className="theme-switcher" aria-label="Theme switcher">
+            {themes.map((item) => (
+              <button
+                className={theme === item.id ? "theme-chip active" : "theme-chip"}
+                key={item.id}
+                type="button"
+                onClick={() => selectTheme(item.id)}
+              >
+                <span className={`theme-dot ${item.id}`} />
+                {item.label}
+              </button>
+            ))}
+          </div>
           <button className="primary-action wide" type="button" onClick={refreshAll} disabled={loadingAll}>
             <RefreshCw size={15} className={loadingAll ? "spin" : ""} />
             Refresh remote
